@@ -1,9 +1,3 @@
-variable "enabled" {
-  description = "Enable Cloudflare DNS record creation"
-  type        = bool
-  default     = false
-}
-
 variable "zone_id" {
   description = "Cloudflare zone ID where DNS records should be created"
   type        = string
