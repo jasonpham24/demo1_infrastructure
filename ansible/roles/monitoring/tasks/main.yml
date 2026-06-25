@@ -1,0 +1,39 @@
+---
+- name: Create stack root directory
+  file:
+    path: /opt/demo1_stack
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create Prometheus configuration directory
+  file:
+    path: /opt/demo1_stack/prometheus
+    state: directory
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Copy Prometheus configuration template
+  template:
+    src: prometheus.yml.j2
+    dest: /opt/demo1_stack/prometheus/prometheus.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Copy Docker Compose file template
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/demo1_stack/docker-compose.yml
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Pull and start Docker Compose stack
+  command:
+    cmd: docker compose up -d --remove-orphans
+    chdir: /opt/demo1_stack
+  register: compose_output
+  changed_when: "'Created' in compose_output.stdout or 'Started' in compose_output.stdout or 'Recreated' in compose_output.stdout"

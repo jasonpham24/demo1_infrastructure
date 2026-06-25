@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo 1 - Foundation Infrastructure Control Panel</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: rgba(255, 255, 255, 0.03);
+            --card-border: rgba(255, 255, 255, 0.08);
+            --text-primary: #f3f4f6;
+            --text-secondary: #9ca3af;
+            --accent-blue: #3b82f6;
+            --accent-purple: #8b5cf6;
+            --accent-green: #10b981;
+            --glow-color: rgba(59, 130, 246, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(at 10% 20%, rgba(139, 92, 246, 0.1) 0px, transparent 50%),
+                radial-gradient(at 90% 80%, rgba(59, 130, 246, 0.1) 0px, transparent 50%);
+        }
+
+        .container {
+            max-width: 1000px;
+            width: 90%;
+            padding: 40px 20px;
+            text-align: center;
+            z-index: 2;
+        }
+
+        header {
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            background: rgba(59, 130, 246, 0.1);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            margin-bottom: 16px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #fff 30%, #a5b4fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: -0.02em;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+            animation: fadeInUp 0.8s ease 0.2s both;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: left;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: transparent;
+            transition: background 0.3s ease;
+        }
+
+        .card-nginx::before { background: var(--accent-green); }
+        .card-grafana::before { background: #ff9e1b; }
+        .card-n8n::before { background: #ff6d5a; }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 0 0 15px var(--glow-color);
+        }
+
+        .card-icon {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+
+        .card h2 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 6px;
+            margin-top: 16px;
+            background: rgba(16, 185, 129, 0.1);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background-color: var(--accent-green);
+            border-radius: 50%;
+            margin-right: 6px;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        footer {
+            margin-top: auto;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--card-border);
+            padding-top: 24px;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            animation: fadeIn 1s ease 0.4s both;
+        }
+
+        .system-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 10px;
+            font-size: 0.8rem;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.02);
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--card-border);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="badge">AWS Foundation Environment</div>
+            <h1 id="main-title">Infrastructure Hub</h1>
+            <p class="description">Access operational monitoring, workflow automation, and infrastructure proxy details running on EC2 via secure routing.</p>
+        </header>
+
+        <div class="grid">
+            <!-- Nginx -->
+            <a href="#" class="card card-nginx" id="btn-nginx-proxy">
+                <span class="card-icon">🎯</span>
+                <h2>NGINX Reverse Proxy</h2>
+                <p>Configured as the primary gateway, directing HTTP/HTTPS traffic to internal tool ports with route mapping.</p>
+                <div class="status"><span class="status-dot"></span>Active</div>
+            </a>
+
+            <!-- Grafana -->
+            <a href="/grafana/" class="card card-grafana" id="btn-grafana-link">
+                <span class="card-icon">📊</span>
+                <h2>Grafana Dashboards</h2>
+                <p>Visualize system metrics, CPU/memory performance, container health, and database statistics.</p>
+                <div class="status"><span class="status-dot"></span>Active</div>
+            </a>
+
+            <!-- Prometheus -->
+            <a href="/prometheus/" class="card card-nginx" id="btn-prometheus-link">
+                <span class="card-icon">🕰️</span>
+                <h2>Prometheus Monitoring</h2>
+                <p>Time-series metrics engine collecting data points from system exporters at configured scrape intervals.</p>
+                <div class="status"><span class="status-dot"></span>Active</div>
+            </a>
+
+            <!-- N8n -->
+            <a href="/n8n/" class="card card-n8n" id="btn-n8n-link">
+                <span class="card-icon">⚡</span>
+                <h2>N8n Workflow Automation</h2>
+                <p>Deploy node-based integration playbooks and run event-driven automations connected to AWS RDS.</p>
+                <div class="status"><span class="status-dot"></span>Active</div>
+            </a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Antigravity DevOps Systems. Provisioned automatically via Terraform & Ansible.</p>
+            <div class="system-info">
+                <span class="info-item">EC2: {{ ansible_facts['processor'] | default('t3.medium') }}</span>
+                <span class="info-item">OS: Ubuntu {{ ansible_facts['distribution_version'] | default('22.04') }}</span>
+                <span class="info-item">Bastion Host: Port 22 Enabled</span>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

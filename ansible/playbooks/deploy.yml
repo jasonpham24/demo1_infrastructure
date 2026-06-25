@@ -1,0 +1,10 @@
+---
+- name: Deploy Foundation Infrastructure Stack
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  roles:
+    - docker
+    - monitoring
+    - nginx

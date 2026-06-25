@@ -1,0 +1,47 @@
+# macOS
+.DS_Store
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+*.tfvars.*
+override.tf
+override.tf.json
+crash.log
+terraform.tfstate.lock.info
+
+# Ansible
+*.retry
+ansible/hosts
+ansible/inventory/*
+
+# Local environment and secrets
+.env
+.env.*
+*.pem
+*.key
+
+# Logs and temporary files
+*.log
+*.tmp
+*.bak
+*~
+
+# Generated files
+*.pyc
+__pycache__/
+
+# Docker
+docker-compose.override.yml
+
+# Other
+node_modules/
