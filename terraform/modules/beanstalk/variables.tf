@@ -1,9 +1,3 @@
-variable "enabled" {
-  description = "Enable Elastic Beanstalk resources"
-  type        = bool
-  default     = false
-}
-
 variable "application_name" {
   description = "Elastic Beanstalk application name"
   type        = string

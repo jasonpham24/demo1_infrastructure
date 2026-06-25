@@ -1,9 +1,3 @@
-variable "enabled" {
-  description = "Enable CloudFront distribution creation"
-  type        = bool
-  default     = false
-}
-
 variable "name" {
   description = "Base name for the CloudFront distribution"
   type        = string

@@ -1,6 +1,6 @@
 output "application_name" {
   description = "Elastic Beanstalk application name"
-  value       = try(aws_elastic_beanstalk_application.this[0].name, null)
+  value       = try(aws_elastic_beanstalk_application.this.name, null)
 }
 
 output "environment_name" {
