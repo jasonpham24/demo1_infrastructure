@@ -98,7 +98,7 @@ module "cloudflare" {
   zone_name    = var.cloudflare_zone
   record_name  = var.cloudflare_record_name
   record_type  = var.cloudflare_record_type
-  record_value = var.cloudflare_record_value
+  record_value = var.cloudflare_record_value != "" ? var.cloudflare_record_value : module.ec2.public_dns
   ttl          = var.cloudflare_ttl
   proxied      = var.cloudflare_record_proxied
   tags = {

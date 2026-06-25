@@ -34,7 +34,7 @@ ansible/inventory/*
 *.log
 *.tmp
 *.bak
-*~
+key
 
 # Generated files
 *.pyc
