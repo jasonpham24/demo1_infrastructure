@@ -58,12 +58,6 @@ variable "bucket_name" {
   default     = "demo1-automation-backups-bucket-79db7b"
 }
 
-variable "enable_cloudfront" {
-  description = "Create a CloudFront distribution for the S3 bucket"
-  type        = bool
-  default     = false
-}
-
 variable "cloudfront_aliases" {
   description = "Alternate domain names for CloudFront distribution"
   type        = list(string)
@@ -80,12 +74,6 @@ variable "cloudfront_default_root_object" {
   description = "Default root object for CloudFront distribution"
   type        = string
   default     = "index.html"
-}
-
-variable "enable_cloudflare" {
-  description = "Create a Cloudflare DNS record"
-  type        = bool
-  default     = false
 }
 
 variable "cloudflare_api_token" {
@@ -137,22 +125,16 @@ variable "cloudflare_record_proxied" {
   default     = true
 }
 
-variable "enable_beanstalk" {
-  description = "Enable Elastic Beanstalk application and environment creation"
-  type        = bool
-  default     = false
-}
-
 variable "beanstalk_application_name" {
   description = "Elastic Beanstalk application name"
   type        = string
-  default     = "${var.instance_name}-app"
+  default     = ""
 }
 
 variable "beanstalk_environment_name" {
   description = "Elastic Beanstalk environment name"
   type        = string
-  default     = "${var.instance_name}-env"
+  default     = ""
 }
 
 variable "beanstalk_solution_stack_name" {

@@ -52,3 +52,8 @@ output "cloudflare_record_name" {
   description = "The Cloudflare DNS record created for the project"
   value       = try(module.cloudflare.record_name, null)
 }
+
+output "ansible_inventory_path" {
+  description = "Path to the generated Ansible inventory file"
+  value       = "${path.root}/../ansible/inventory/inventory.ini"
+}

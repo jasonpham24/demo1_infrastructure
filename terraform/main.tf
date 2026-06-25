@@ -80,7 +80,6 @@ module "s3" {
 # 5.  CloudFront CDN for S3 static site
 module "cloudfront" {
   source              = "./modules/cloudfront"
-  enabled             = var.enable_cloudfront
   name                = "${var.instance_name}-cdn"
   bucket_id           = module.s3.bucket_id
   aliases             = var.cloudfront_aliases
@@ -95,7 +94,6 @@ module "cloudfront" {
 # 6.  Cloudflare DNS record
 module "cloudflare" {
   source       = "./modules/cloudflare"
-  enabled      = var.enable_cloudflare
   zone_id      = var.cloudflare_zone_id
   zone_name    = var.cloudflare_zone
   record_name  = var.cloudflare_record_name
@@ -127,7 +125,6 @@ module "rds" {
 # 8.  Elastic Beanstalk scaffolding for demo 1.2
 module "beanstalk" {
   source                     = "./modules/beanstalk"
-  enabled                    = var.enable_beanstalk
   application_name           = var.beanstalk_application_name
   environment_name           = var.beanstalk_environment_name
   solution_stack_name        = var.beanstalk_solution_stack_name
@@ -139,4 +136,20 @@ module "beanstalk" {
     Environment = "demo"
     Project     = "demo1"
   }
+}
+
+locals {
+  ansible_inventory_host_line = "${module.ec2.public_ip} ansible_user=${var.ssh_user}${var.private_key_path != "" ? " ansible_ssh_private_key_file=${var.private_key_path}" : ""}"
+  ansible_inventory_content = <<EOF
+[demo]
+${local.ansible_inventory_host_line}
+
+[demo:vars]
+ansible_python_interpreter=/usr/bin/python3
+EOF
+}
+
+resource "local_file" "ansible_inventory" {
+  filename = "${path.module}/../ansible/inventory/inventory.ini"
+  content  = local.ansible_inventory_content
 }
