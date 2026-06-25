@@ -4,11 +4,11 @@ resource "aws_security_group" "ec2" {
   vpc_id      = local.selected_vpc_id
 
   ingress {
-    description      = "SSH"
-    from_port        = 22
-    to_port          = 22
-    protocol         = "tcp"
-    cidr_blocks      = var.allowed_ssh_cidrs
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = var.allowed_ssh_cidrs
   }
 
   ingress {
@@ -34,5 +34,9 @@ resource "aws_security_group" "ec2" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = merge({
+    Name = "${var.name}-sg"
+  }, var.tags)
 
 }

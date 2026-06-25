@@ -28,20 +28,20 @@ variable "subnet_id" {
 }
 
 
-variable "availability_zone" {
-  description = "AZ for the instance (optional)"
-  type        = string
-  default     = null
-}
-
 variable "key_name" {
-  description = "Existing EC2 key pair name (optional). If empty, user data will accept an ssh public key via `ssh_public_key`."
+  description = "Existing EC2 key pair name (optional)."
   type        = string
   default     = ""
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key content to provision for the default admin user (cloud-init authorized_key)."
+variable "create_ssh_key" {
+  description = "Create a new SSH key pair and use it for the EC2 instance"
+  type        = bool
+  default     = false
+}
+
+variable "private_key_path" {
+  description = "Local path where the generated private key will be written"
   type        = string
   default     = ""
 }
@@ -52,16 +52,10 @@ variable "allowed_ssh_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
-variable "enable_monitoring_ports" {
-  description = "Expose Grafana/Prometheus/N8n ports in the security group"
-  type        = bool
-  default     = true
-}
-
 variable "iam_instance_profile_name" {
   description = "The name of the IAM instance profile to associate with the EC2 instance"
   type        = string
-  default     = null
+  default     = ""
 }
 
 variable "ebs_volume_size" {
