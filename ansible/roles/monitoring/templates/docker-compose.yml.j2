@@ -17,16 +17,16 @@ services:
     expose:
       - "9090"
     ports:
-      - "127.0.0.1:9090:9090"
+      - "9090:9090"
     restart: unless-stopped
 
   grafana:
     image: grafana/grafana:latest
     container_name: grafana
     ports:
-      - "127.0.0.1:3000:3000"
+      - "3000:3000"
     environment:
-      - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password | default('admin123') }}
+      - GF_SECURITY_ADMIN_PASSWORD={{ grafana_admin_password}}
       - GF_USERS_ALLOW_SIGN_UP=false
       - GF_SERVER_ROOT_URL=http://localhost/grafana/
       - GF_SERVER_SERVE_FROM_SUB_PATH=true
@@ -48,14 +48,14 @@ services:
     expose:
       - "9100"
     ports:
-      - "127.0.0.1:9100:9100"
+      - "9100:9100"
     restart: unless-stopped
 
   n8n:
     image: n8nio/n8n:latest
     container_name: n8n
     ports:
-      - "127.0.0.1:5678:5678"
+      - "5678:5678"
     environment:
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST={{ db_host }}
@@ -65,7 +65,7 @@ services:
       - DB_POSTGRESDB_PASSWORD={{ db_password }}
       - N8N_PATH=/n8n/
       - WEBHOOK_URL=http://{{ ec2_public_ip }}/n8n/
-      - N8N_ENCRYPTION_KEY={{ n8n_encryption_key | default('super-secret-key-change-me') }}
+      - N8N_ENCRYPTION_KEY={{ n8n_encryption_key }}
       - N8N_BACKLOG_MAX_SIZE=1000
     restart: unless-stopped
 

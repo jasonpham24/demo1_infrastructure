@@ -14,6 +14,11 @@
     mode: '0644'
   notify: Restart Nginx
 
+- name: Remove default nginx site
+  file:
+    path: /etc/nginx/sites-enabled/default
+    state: absent
+
 - name: Ensure Nginx is started and enabled
   ansible.builtin.service:
     name: nginx
