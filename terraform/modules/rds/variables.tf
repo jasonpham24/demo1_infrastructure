@@ -44,6 +44,12 @@ variable "allocated_storage" {
   default     = 20
 }
 
+variable "engine_version" {
+  description = "PostgreSQL engine version for the RDS instance"
+  type        = string
+  default     = "15"
+}
+
 variable "ec2_security_group_id" {
   description = "The security group ID of the EC2 instance that needs database access"
   type        = string
