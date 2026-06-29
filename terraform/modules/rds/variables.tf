@@ -50,8 +50,8 @@ variable "engine_version" {
   default     = "15"
 }
 
-variable "ec2_security_group_id" {
-  description = "The security group ID of the EC2 instance that needs database access"
+variable "security_group_id" {
+  description = "The ID of the security group to associate with the RDS instance"
   type        = string
 }
 

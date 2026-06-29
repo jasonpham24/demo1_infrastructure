@@ -46,10 +46,9 @@ variable "private_key_path" {
   default     = ""
 }
 
-variable "allowed_ssh_cidrs" {
-  description = "List of CIDR ranges allowed to SSH to the instance"
-  type        = list(string)
-  default     = ["0.0.0.0/0"]
+variable "security_group_id" {
+  description = "The ID of the security group to associate with the EC2 instance"
+  type        = string
 }
 
 variable "iam_instance_profile_name" {
