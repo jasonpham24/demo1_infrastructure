@@ -1,46 +1,13 @@
-terraform {
-  required_version = ">= 1.0.0"
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-    cloudflare = {
-      source  = "cloudflare/cloudflare"
-      version = "~> 3.0"
-    }
-    tls = {
-      source  = "hashicorp/tls"
-      version = "~> 4.0"
-    }
-    local = {
-      source  = "hashicorp/local"
-      version = "~> 2.0"
-    }
+# 1. Security Groups
+module "security_groups" {
+  source              = "./modules/security_groups"
+  name                = var.instance_name
+  vpc_id              = data.aws_vpc.default.id
+  allowed_ssh_cidrs   = var.allowed_ssh_cidrs
+  tags = {
+    Environment = "demo"
+    Project     = "demo1"
   }
-}
-
-provider "aws" {
-  region = var.aws_region
-}
-
-provider "cloudflare" {
-  api_token = var.cloudflare_api_token != "" ? var.cloudflare_api_token : null
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnets" "default" {
-  filter {
-    name   = "vpc-id"
-    values = [data.aws_vpc.default.id]
-  }
-}
-
-data "aws_ssm_parameter" "ubuntu" {
-  name = "/aws/service/canonical/ubuntu/server/22.04/stable/current/amd64/hvm/ebs-gp2/ami-id"
 }
 
 # 2. IAM Roles & Profile
@@ -60,6 +27,7 @@ module "ec2" {
   create_ssh_key            = var.create_ssh_key
   private_key_path          = var.private_key_path
   iam_instance_profile_name = module.iam.instance_profile_name
+  security_group_id         = module.security_groups.web_server_security_group_id
 
   tags = {
     Environment = "demo"
@@ -114,7 +82,7 @@ module "rds" {
   vpc_id                = data.aws_vpc.default.id
   subnet_ids            = data.aws_subnets.default.ids
   db_password           = var.db_password
-  ec2_security_group_id = module.ec2.security_group_id
+  security_group_id     = module.security_groups.database_security_group_id
 
   tags = {
     Environment = "demo"
@@ -136,20 +104,4 @@ module "beanstalk" {
     Environment = "demo"
     Project     = "demo1"
   }
-}
-
-locals {
-  ansible_inventory_host_line = "${module.ec2.public_ip} ansible_user=${var.ssh_user}${var.private_key_path != "" ? " ansible_ssh_private_key_file=${var.private_key_path}" : ""}"
-  ansible_inventory_content = <<EOF
-[demo]
-${local.ansible_inventory_host_line}
-
-[demo:vars]
-ansible_python_interpreter=/usr/bin/python3
-EOF
-}
-
-resource "local_file" "ansible_inventory" {
-  filename = "${path.module}/../ansible/inventory/inventory.ini"
-  content  = local.ansible_inventory_content
 }
