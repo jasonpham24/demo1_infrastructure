@@ -69,6 +69,11 @@ variable "associate_public_ip" {
   default     = true
 }
 
+variable "default_vpc_id" {
+  description = "The ID of the default VPC, passed from the root module."
+  type        = string
+}
+
 variable "tags" {
   description = "Additional tags to apply"
   type        = map(string)

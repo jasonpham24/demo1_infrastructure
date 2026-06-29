@@ -1,9 +1,5 @@
-data "aws_vpc" "default" {
-  default = true
-}
-
 locals {
-  selected_vpc_id = var.vpc_id != "" ? var.vpc_id : data.aws_vpc.default.id
+  selected_vpc_id = var.vpc_id != "" ? var.vpc_id : var.default_vpc_id
 }
 
 resource "tls_private_key" "generated" {

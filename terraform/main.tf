@@ -12,8 +12,10 @@ module "security_groups" {
 
 # 2. IAM Roles & Profile
 module "iam" {
-  source = "./modules/iam"
-  name   = var.instance_name
+  source                = "./modules/iam"
+  name                  = var.instance_name
+  assume_role_policy_json = data.aws_iam_policy_document.assume_role.json
+  ec2_policy_json       = data.aws_iam_policy_document.ec2_policy.json
 }
 
 # 3. Foundation EC2 (Bastion / Host) running in default VPC
@@ -28,13 +30,13 @@ module "ec2" {
   private_key_path          = var.private_key_path
   iam_instance_profile_name = module.iam.instance_profile_name
   security_group_id         = module.security_groups.web_server_security_group_id
+  default_vpc_id            = data.aws_vpc.default.id
 
   tags = {
     Environment = "demo"
     Project     = "demo1"
   }
 }
-
 # 4. S3 Bucket for demo static assets
 module "s3" {
   source      = "./modules/s3"
@@ -69,6 +71,7 @@ module "cloudflare" {
   record_value = var.cloudflare_record_value != "" ? var.cloudflare_record_value : module.ec2.public_dns
   ttl          = var.cloudflare_ttl
   proxied      = var.cloudflare_record_proxied
+  cloudflare_zone_id_from_data_source = data.cloudflare_zones.zone[0].id
   tags = {
     Environment = "demo"
     Project     = "demo1"
