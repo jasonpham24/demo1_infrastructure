@@ -44,10 +44,34 @@ variable "allocated_storage" {
   default     = 20
 }
 
+variable "engine" {
+  description = "The database engine to use"
+  type        = string
+  default     = "postgres"
+}
+
 variable "engine_version" {
   description = "PostgreSQL engine version for the RDS instance"
   type        = string
   default     = "15"
+}
+
+variable "max_allocated_storage" {
+  description = "The maximum storage in gigabytes to which the DB instance can scale."
+  type        = number
+  default     = 100
+}
+
+variable "skip_final_snapshot" {
+  description = "Determines whether a final DB snapshot is created before the DB instance is deleted."
+  type        = bool
+  default     = true
+}
+
+variable "publicly_accessible" {
+  description = "Specifies the accessibility options for the DB instance."
+  type        = bool
+  default     = false
 }
 
 variable "security_group_id" {

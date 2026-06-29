@@ -63,6 +63,12 @@ variable "ebs_volume_size" {
   default     = 30
 }
 
+variable "ebs_volume_type" {
+  description = "The type of the EBS volume"
+  type        = string
+  default     = "gp3"
+}
+
 variable "associate_public_ip" {
   description = "Whether to associate a public IP"
   type        = bool

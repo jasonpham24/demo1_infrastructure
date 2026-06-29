@@ -33,7 +33,7 @@ resource "aws_instance" "this" {
 
   root_block_device {
     volume_size = var.ebs_volume_size
-    volume_type = "gp3"
+    volume_type = var.ebs_volume_type
   }
 
   tags = merge({
