@@ -166,3 +166,9 @@ variable "beanstalk_instance_type" {
   type        = string
   default     = "t3.small"
 }
+
+variable "allowed_ssh_cidrs" {
+  description = "List of CIDR ranges allowed to SSH to the instance"
+  type        = list(string)
+  default     = ["0.0.0.0/0"]
+}
