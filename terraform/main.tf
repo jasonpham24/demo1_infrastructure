@@ -55,6 +55,8 @@ module "ec2" {
   security_group_id         = module.security_groups.ec2_instance_security_group_id
   default_vpc_id            = data.aws_vpc.default.id
   ebs_volume_type           = "gp3"
+  ssh_key_rsa_bits          = 4096
+  ssh_private_key_file_permission = "0600"
 
   tags = {
     Environment = "demo"

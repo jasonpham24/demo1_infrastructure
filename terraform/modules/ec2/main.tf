@@ -5,7 +5,7 @@ locals {
 resource "tls_private_key" "generated" {
   count     = var.create_ssh_key ? 1 : 0
   algorithm = "RSA"
-  rsa_bits  = 4096
+  rsa_bits  = var.ssh_key_rsa_bits
 }
 
 resource "aws_key_pair" "generated" {
@@ -18,7 +18,7 @@ resource "local_file" "ssh_private_key" {
   count           = var.create_ssh_key && var.private_key_path != "" ? 1 : 0
   content         = tls_private_key.generated[0].private_key_pem
   filename        = var.private_key_path
-  file_permission = "0600"
+  file_permission = var.ssh_private_key_file_permission
 }
 
 resource "aws_instance" "this" {

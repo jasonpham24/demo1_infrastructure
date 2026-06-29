@@ -85,3 +85,15 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "ssh_key_rsa_bits" {
+  description = "The number of bits in the RSA key for the generated SSH key pair"
+  type        = number
+  default     = 4096
+}
+
+variable "ssh_private_key_file_permission" {
+  description = "File permission for the generated SSH private key file"
+  type        = string
+  default     = "0600"
+}
