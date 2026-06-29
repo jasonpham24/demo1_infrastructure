@@ -92,17 +92,25 @@ module "cloudfront" {
   }
 }
 
-# 6.  Cloudflare DNS record
-module "cloudflare" {
+# 6.  Cloudflare DNS records
+locals {
+  subdomains = {
+    grafana    = "grafana"
+    prometheus = "prometheus"
+    n8n        = "n8n"
+  }
+}
+
+module "cloudflare_dns" {
+  for_each     = local.subdomains
   source       = "./modules/cloudflare"
-  zone_id      = var.cloudflare_zone_id
   zone_name    = "c1nd3r.site"
-  record_name  = "demo1.c1nd3r.site"
-  record_type  = "CNAME"
-  record_value = var.cloudflare_record_value != "" ? var.cloudflare_record_value : module.ec2.public_dns
+  zone_id      = var.zone_id
+  record_name  = each.value
+  record_type  = "A"
+  record_value = module.ec2.public_ip
   ttl          = 1
   proxied      = false
-  cloudflare_zone_id_from_data_source = data.cloudflare_zones.zone[0].id
   tags = {
     Environment = "demo"
     Project     = "demo1"

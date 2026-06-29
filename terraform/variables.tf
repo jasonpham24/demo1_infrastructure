@@ -83,46 +83,10 @@ variable "cloudflare_api_token" {
   sensitive   = true
 }
 
-variable "cloudflare_zone_id" {
-  description = "Cloudflare zone ID for DNS record creation"
+variable "zone_id" {
+  description = "Cloudflare zone ID where DNS records should be created"
   type        = string
   default     = ""
-}
-
-variable "cloudflare_zone" {
-  description = "Cloudflare zone name for DNS record creation"
-  type        = string
-  default     = ""
-}
-
-variable "cloudflare_ttl" {
-  description = "TTL for Cloudflare DNS record"
-  type        = number
-  default     = 1
-}
-
-variable "cloudflare_record_name" {
-  description = "Cloudflare DNS record name"
-  type        = string
-  default     = ""
-}
-
-variable "cloudflare_record_type" {
-  description = "Cloudflare DNS record type"
-  type        = string
-  default     = "CNAME"
-}
-
-variable "cloudflare_record_value" {
-  description = "Target value for the Cloudflare DNS record"
-  type        = string
-  default     = ""
-}
-
-variable "cloudflare_record_proxied" {
-  description = "Whether Cloudflare should proxy the DNS record"
-  type        = bool
-  default     = true
 }
 
 variable "beanstalk_application_name" {
