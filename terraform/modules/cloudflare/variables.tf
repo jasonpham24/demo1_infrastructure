@@ -40,6 +40,12 @@ variable "proxied" {
   default     = true
 }
 
+variable "cloudflare_zone_id_from_data_source" {
+  description = "The ID of the Cloudflare zone, obtained from a data source in the root module."
+  type        = string
+  default     = ""
+}
+
 variable "tags" {
   description = "Tags to apply to the Cloudflare module"
   type        = map(string)

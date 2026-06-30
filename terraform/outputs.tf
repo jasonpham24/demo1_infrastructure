@@ -48,9 +48,9 @@ output "beanstalk_environment_url" {
   value       = try(module.beanstalk.environment_url, null)
 }
 
-output "cloudflare_record_name" {
-  description = "The Cloudflare DNS record created for the project"
-  value       = try(module.cloudflare.record_name, null)
+output "cloudflare_record_names" {
+  description = "The Cloudflare DNS records created for the project"
+  value       = [for record in module.cloudflare_dns : record.record_name]
 }
 
 output "ansible_inventory_path" {

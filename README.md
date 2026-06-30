@@ -10,7 +10,7 @@ Demo1 Infrastructure provides a complete automated infrastructure solution, incl
 - **Database**: RDS PostgreSQL for data storage
 - **Monitoring**: Prometheus & Grafana for system monitoring
 - **Automation**: N8N for workflow automation
-- **Reverse Proxy**: Nginx configured as a reverse proxy for services
+- **Reverse Proxy**: Nginx configured as a subdomain-based reverse proxy for services
 - **CDN**: CloudFront + S3 for static assets
 - **DNS**: Cloudflare DNS management
 - **Containers**: Docker & Docker Compose for running services
@@ -219,27 +219,22 @@ Ansible will:
 
 ## 📊 Accessing Services
 
-After deployment is complete, you can access:
+After deployment is complete, you can access services via their respective subdomains. Ensure your Cloudflare DNS is correctly configured to point these subdomains to your EC2 instance or CloudFront distribution.
 
-### Via EC2 Public IP / DNS
+### Via DNS (if Cloudflare configured for subdomains)
 
-- **Grafana**: `http://<ec2-public-dns>/grafana/`
+- **Grafana**: `http://grafana.<your-domain>`
   - Default: admin / admin
 
-- **Prometheus**: `http://<ec2-public-dns>/prometheus/`
+- **Prometheus**: `http://prometheus.<your-domain>`
   - Metrics database
 
-- **N8N**: `http://<ec2-public-dns>/n8n/`
+- **N8N**: `http://n8n.<your-domain>`
   - Workflow automation
 
-### Via DNS (if Cloudflare configured)
-
-- `http://demo1.example.com/grafana/`
-- `http://demo1.example.com/prometheus/`
-- `http://demo1.example.com/n8n/`
+*Note: Replace `<your-domain>` with the domain configured in your `terraform/terraform.tfvars` (e.g., `example.com`).*
 
 ---
-
 ## 🔧 Advanced Configuration
 
 ### Change Instance Type
