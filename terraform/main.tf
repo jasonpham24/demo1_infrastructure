@@ -4,7 +4,7 @@ module "security_groups" {
   name                = "demo1-infra"
   vpc_id              = data.aws_vpc.default.id
   allowed_ssh_cidrs   = var.allowed_ssh_cidrs
-  ec2_instance_ingress_rules = [
+  ec2_instance_ingress_cidr_rules = [
     {
       description = "SSH"
       from_port   = 22
@@ -25,6 +25,24 @@ module "security_groups" {
       to_port     = 443
       protocol    = "tcp"
       cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+  ec2_instance_egress_cidr_rules = [
+    {
+      description = "All outbound"
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+  ]
+  rds_database_ingress_sg_rules = [
+    {
+      description              = "PostgreSQL from EC2"
+      from_port                = 5432
+      to_port                  = 5432
+      protocol                 = "tcp"
+      source_security_group_id = module.security_groups.ec2_instance_security_group_id
     }
   ]
   tags = {

@@ -14,8 +14,80 @@ variable "allowed_ssh_cidrs" {
   default     = ["0.0.0.0/0"]
 }
 
-variable "ec2_instance_ingress_rules" {
-  description = "A list of ingress rules for the EC2 instance security group"
+variable "ec2_instance_ingress_cidr_rules" {
+  description = "EC2 ingress rules using cidr_blocks"
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "ec2_instance_ingress_sg_rules" {
+  description = "EC2 ingress rules using source_security_group_id"
+  type = list(object({
+    description              = string
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    source_security_group_id = string
+  }))
+  default = []
+}
+
+variable "ec2_instance_egress_cidr_rules" {
+  description = "EC2 egress rules using cidr_blocks"
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "ec2_instance_egress_sg_rules" {
+  description = "EC2 egress rules using source_security_group_id"
+  type = list(object({
+    description              = string
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    source_security_group_id = string
+  }))
+  default = []
+}
+
+variable "rds_database_ingress_cidr_rules" {
+  description = "RDS ingress rules using cidr_blocks"
+  type = list(object({
+    description = string
+    from_port   = number
+    to_port     = number
+    protocol    = string
+    cidr_blocks = list(string)
+  }))
+  default = []
+}
+
+variable "rds_database_ingress_sg_rules" {
+  description = "RDS ingress rules using source_security_group_id"
+  type = list(object({
+    description              = string
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    source_security_group_id = string
+  }))
+  default = []
+}
+
+variable "rds_database_egress_cidr_rules" {
+  description = "RDS egress rules using cidr_blocks"
   type = list(object({
     description = string
     from_port   = number
@@ -24,28 +96,20 @@ variable "ec2_instance_ingress_rules" {
     cidr_blocks = list(string)
   }))
   default = [
-    {
-      description = "SSH"
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      description = "HTTP"
-      from_port   = 80
-      to_port     = 80
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    },
-    {
-      description = "HTTPS"
-      from_port   = 443
-      to_port     = 443
-      protocol    = "tcp"
-      cidr_blocks = ["0.0.0.0/0"]
-    }
+    { description = "Allow all outbound", from_port = 0, to_port = 0, protocol = "-1", cidr_blocks = ["0.0.0.0/0"] }
   ]
+}
+
+variable "rds_database_egress_sg_rules" {
+  description = "RDS egress rules using source_security_group_id"
+  type = list(object({
+    description              = string
+    from_port                = number
+    to_port                  = number
+    protocol                 = string
+    source_security_group_id = string
+  }))
+  default = []
 }
 
 variable "tags" {
